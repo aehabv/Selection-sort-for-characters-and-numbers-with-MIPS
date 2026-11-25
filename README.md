@@ -1,20 +1,42 @@
-# Selection-Sort-for-characters-and-Integers-with-MIPS
-[![Language Badge](https://img.shields.io/badge/Language-MIPS-orange.svg)](https://en.wikipedia.org/wiki/MIPS_architecture)
-[![License Badge](https://img.shields.io/badge/License-CC%20BY--NC%204.0-0a2c46.svg)](https://creativecommons.org/licenses/by-nc/4.0/legalcode)
+# Selection sort in MIPS assembly
 
-This project implements selection sort algorithm in MIPS assembly language to sort both characters and integers.
+![MIPS](https://img.shields.io/badge/MIPS-Assembly-6E4C9B?style=flat)
+![MARS](https://img.shields.io/badge/Simulator-MARS%20%7C%20QtSpim-2C3E50?style=flat)
+![License](https://img.shields.io/badge/License-CC%20BY--NC%204.0-0a2c46?style=flat)
 
-## Algorithm
+Sorting is one line in Python. In assembly you manage every register, address and loop counter yourself. I wrote selection sort in MIPS for a university course to see what a "simple" algorithm costs at the lowest level. It sorts either a list of integers or the characters of a string.
 
-The selection sort algorithm works by repeatedly finding the minimum element from the unsorted part of the array and putting it at the beginning. The algorithm maintains two subarrays in a given array:
+## How selection sort works
 
-1. The subarray which is already sorted.
-2. Remaining subarray which is unsorted.
+Walk through the list, find the smallest item in the part that isn't sorted yet, and swap it to the front of that part. Repeat until nothing is left. It always does about n²/2 comparisons, which is slow for big lists but easy to get right.
 
-## Usage
+## What's in the repo
 
-To use the program, simply load the input array into the `.data` section of the MIPS program and call the `selection_sort` function. The sorted array will be stored in the same input array.
+| File | What it does |
+|---|---|
+| `src/SelectionSort.asm` | Asks whether you want to sort integers or characters, then does it |
+| `src/SelectionSort_Int.asm` | Integers only |
+| `src/SelectionSort_Char.asm` | Characters only |
 
-## Improvements
+**Integers:** you enter the array size, then one number per line. The numbers are stored on the stack, four bytes each.
 
-The program can be optimized by using different sorting algorithms such as insertion sort and bubble sort. The program can also be extended to sort other types of data structures such as linked lists and trees.
+**Characters:** you type a string, and its characters are sorted in place by their ASCII codes.
+
+Either way, the program prints the sorted result, with the prompts shown in the console.
+
+
+## Caveats
+
+- **Any menu choice other than 1 or 2 sorts integers.** There's no "invalid choice" check, so the code falls through to the integer sort.
+- **The integers are written above the stack pointer** without moving it first. It works in the simulator, but it isn't how stack space is meant to be claimed.
+- **Uppercase sorts before lowercase,** because the sort compares ASCII codes.
+
+## How to run
+
+1. Download [MARS](https://computerscience.missouristate.edu/mars-mips-simulator.htm) (needs Java) or [QtSpim](https://spimsimulator.sourceforge.net/).
+2. Open one of the `.asm` files in `src/`.
+3. Assemble it, run it, and type your input in the console.
+
+## What I'd like to do next
+
+Fix the menu check, and write insertion sort the same way to compare instruction counts in MARS.
